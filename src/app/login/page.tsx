@@ -1,53 +1,52 @@
+"use client"
+
 import { ArrowLeft, EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail, User } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import {motion} from 'motion/react'
 import Image from 'next/image'
 import google from '@/assets/google.png'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
-type propType={
-  previousStep:(s:number)=>void
-}
 
-const RegisterForm = ({previousStep}:propType) => {
 
-  const router = useRouter()
 
- const [name,setName] = useState("")
+
+const Login = () => {
+
+
  const [email,setEmail] = useState("")
  const [password,setPassword] = useState("")
 
-
  const [loading,setLoading] = useState(false)
 
- const handleRegister = async (e:React.FormEvent) => {
+const router = useRouter()
+const session = useSession()
+
+
+const handleLogin = async (e:FormEvent) => {
   e.preventDefault()
   setLoading(true)
-   try {
-    const result = await axios.post("/api/auth/register",{
-      name,email,password
+  try {
+    await signIn("credentials",{
+      email,password
     })
-    console.log(result.data)
     setLoading(false)
-   } catch (error) {
+  } catch (error) {
     console.log(error)
     setLoading(false)
-   }
- }
+  }
+}
+
+
 
 
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen px-6 py-10 bg-white relative'>
 
-        <div className='absolute top-6 left-6 flex items-center gap-2 text-green-700 hover:text-green-800 transition-colors cursor-pointer'
-        onClick={()=>previousStep(1)}
-        >
-          <ArrowLeft className='w-5 h-5'/>
-          <span className='font-medium'>Back</span>
-        </div>
+      
 
         <motion.h1
         initial={{
@@ -61,13 +60,13 @@ const RegisterForm = ({previousStep}:propType) => {
         transition={{
           duration:0.5
         }}
-        className='text-4xl font-extrabold text-green-700 mb-2' >Create Account</motion.h1>
-          <p className='text-gray-600 mb-8 flex items-center gap-2 font-semibold'>Join SnapCart today <Leaf className='w-5 h-5 text-green-600' /></p>
+        className='text-4xl font-extrabold text-green-700 mb-2' >Welcome Back</motion.h1>
+          <p className='text-gray-600 mb-8 flex items-center gap-2 font-semibold'>Login SnapCart<Leaf className='w-5 h-5 text-green-600' /></p>
 
           {/* LOGIN FORM======================================= */}
 
           <motion.form
-          onSubmit={handleRegister}
+            onSubmit={handleLogin}
            initial={{
          
           opacity:0
@@ -81,13 +80,6 @@ const RegisterForm = ({previousStep}:propType) => {
         }}
           className='flex flex-col gap-5 w-full max-w-sm'>
 
-            <div className='relative'>
-              <User className='absolute left-3 top-3.5 w-5 h-5 text-gray-400'/>
-              <input type="text" placeholder=' Your Name...' className='w-full border border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-800 focus:ring-2 focus:ring-green-500 focus:outline-none' 
-              onChange={(e)=>setName(e.target.value)}
-              value={name}
-              />
-            </div>
 
             
             <div className='relative'>
@@ -110,9 +102,9 @@ const RegisterForm = ({previousStep}:propType) => {
               {/* BUTTON==========================REGISTER======================= */}
            {
             (()=>{
-                const formValidation = name!=="" && email!=="" && password!==""
+                const formValidation =  email!=="" && password!==""
               return <button disabled={!formValidation || loading} className={`w-full font-semibold py-3 rounded-xl transition-all duration-200 shadow-md inline-flex items-center justify-center gap-2 ${formValidation ? "bg-green-600 hover:bg-green-700 text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"} `}>
-                {loading?<Loader2 className='w-5 h-5 animate-spin'/>:"Register"}
+                {loading?<Loader2 className='w-5 h-5 animate-spin'/>:"Login"}
                 
               </button>
             })()
@@ -124,16 +116,16 @@ const RegisterForm = ({previousStep}:propType) => {
             <span className='flex-1 h-px bg-gray-200'></span>
            </div>
 
-           <button onClick={()=>signIn("google",{callbackUrl:"/"})} className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200'>
+           <button  onClick={()=>signIn("google",{callbackUrl:"/"})} className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200'>
             <Image src={google} width={20} height={20} alt='google'/>
             Continue With Google
            </button>
 
           </motion.form>
 
-          <p onClick={()=>router.push('/login')} className='cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1'>Already Have an account? <LogIn className='w-4 h-4'/> <span className='text-green-600'>Sign In</span></p>
+          <p onClick={()=>router.push('/register')} className='cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1'>Want to create an account? <LogIn className='w-4 h-4'/> <span className='text-green-600'>Sign Up</span></p>
     </div>
   )
 }
 
-export default RegisterForm
+export default Login

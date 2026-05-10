@@ -1,11 +1,10 @@
 
-import Image from "next/image";
-import Register from "./register/page";
+import React from "react";
 
 export default function Home() {
   return (
     <div>
-      <Register/>
+   
     </div>
   );
 }
