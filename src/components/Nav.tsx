@@ -77,7 +77,7 @@ const Nav = ({user}:{user:IUser}) => {
           </div>
 
           <div className='flex flex-col gap-2 font-medium mt-8'>
-            <Link className='flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] hover:border-white/[0.1] hover:translate-x-1 transition-all duration-300 group' href={""}>
+            <Link className='flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] hover:border-white/[0.1] hover:translate-x-1 transition-all duration-300 group' href={"/admin/add-grocery"}>
               <div className='w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300'>
                 <PlusCircle className='w-5 h-5 text-emerald-400' />
               </div>
@@ -145,7 +145,7 @@ const Nav = ({user}:{user:IUser}) => {
 
           {user.role=="admin" && <>
             <div className='hidden md:flex items-center gap-3'>
-              <Link className='flex items-center gap-2.5 bg-white/95 backdrop-blur-sm text-slate-700 font-semibold px-5 py-2.5 rounded-full hover:bg-white hover:shadow-lg hover:shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all duration-300 group' href={""}>
+              <Link className='flex items-center gap-2.5 bg-white/95 backdrop-blur-sm text-slate-700 font-semibold px-5 py-2.5 rounded-full hover:bg-white hover:shadow-lg hover:shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all duration-300 group' href={"/admin/add-grocery"}>
                 <div className='w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center group-hover:bg-emerald-200 transition-colors'>
                   <PlusCircle className='w-4 h-4 text-emerald-600' />
                 </div>
